@@ -1156,29 +1156,36 @@ merchantUpiId: ''
 
   const toggleDarkMode = () => setIsDarkMode(prev => !prev);
 
-  const updateRazorpayConfig = (keyId: string, keySecret: string, isTestMode: boolean = false, merchantUpiId?: string) => {
-    const isLive = Boolean(keyId && keyId.trim().length >= 6 && keySecret && keySecret.trim().length >= 6);
-    const updated: RazorpayConfig = {
-      keyId: keyId.trim(),
-      keySecret: keySecret.trim(),
-      isTestMode,
-      merchantUpiId: merchantUpiId?.trim() || 'apnicart@townupi',
-      isLiveActive: isLive,
-      lastLinkedAt: Date.now()
-    };
-    setRazorpayConfig(updated);
-    try {
-      localStorage.setItem('tb_razorpay', JSON.stringify(updated));
-    } catch {}
+  const updateRazorpayConfig = (
+  keyId: string,
+  isTestMode: boolean = false,
+  merchantUpiId?: string
+) => {
+  const isLive = Boolean(keyId && keyId.trim().length >= 6);
 
-    sendPushNotification(
-      'Razorpay Account Linked Live!',
-      isLive 
-        ? `Razorpay Gateway Key (${keyId.slice(0, 10)}...) is now linked. All website customer payments will credit to your account!` 
-        : `Razorpay credentials updated.`,
-      'system'
-    );
+  const updated: RazorpayConfig = {
+    keyId: keyId.trim(),
+    keySecret: '',
+    isTestMode,
+    merchantUpiId: merchantUpiId?.trim() || '',
+    isLiveActive: isLive,
+    lastLinkedAt: Date.now()
   };
+
+  setRazorpayConfig(updated);
+
+  try {
+    localStorage.setItem('tb_razorpay', JSON.stringify(updated));
+  } catch {}
+
+  sendPushNotification(
+    'Razorpay Account Linked!',
+    isLive
+      ? `Razorpay Gateway Key (${keyId.slice(0, 10)}...) is now linked.`
+      : 'Razorpay credentials updated.',
+    'system'
+  );
+};
 
   const updateStoreSettings = (newSettings: Partial<StoreSettings>) => {
     setStoreSettings(prev => {
