@@ -13,6 +13,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
   const [phone, setPhone] = useState('');
   const [name, setName] = useState('');
   const [step, setStep] = useState<'phone' | 'otp'>('phone');
+  const [confirmationResult, setConfirmationResult] = useState<ConfirmationResult | null>(null);
   const [otp, setOtp] = useState('');
 
   const [isLoading, setIsLoading] = useState(false);
@@ -54,26 +55,46 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
     }, 700);
   };
 
-  const handleVerifyOtp = (e: React.FormEvent) => {
-    e.preventDefault();
-    
-  if (!otp || otp.length !== 4) {
-     setAuthError('Invalid OTP. Please check the SMS sent to your phone.');
-      setTimeout(() => setAuthError(''), 3500);
-      return;
-    }
+const handleVerifyOtp = async (e: React.FormEvent) => {
+  e.preventDefault();
 
-    setIsLoading(true);
-    setTimeout(() => {
-      setIsLoading(false);
-      loginWithPhone(phone, name.trim());
-      onClose();
-      setStep('phone');
-      setPhone('');
-      setOtp('');
-      sendPushNotification(`Welcome, ${name}!`, 'Signed in successfully to ApniCart.', 'system');
-    }, 500);
-  };
+  if (!otp || otp.length !== 6) {
+    setAuthError('Invalid OTP. Please check the SMS sent to your phone.');
+    setTimeout(() => setAuthError(''), 3500);
+    return;
+  }
+
+  if (!confirmationResult) {
+    setAuthError('Please request a new OTP first.');
+    return;
+  }
+
+  setIsLoading(true);
+
+  try {
+    const result = await confirmationResult.confirm(otp);
+    const verifiedPhone = result.user.phoneNumber || phone;
+
+    loginWithPhone(verifiedPhone, name.trim());
+
+    onClose();
+    setStep('phone');
+    setPhone('');
+    setOtp('');
+    setConfirmationResult(null);
+
+    sendPushNotification(
+      `Welcome, ${name}!`,
+      'Signed in successfully to ApniCart.',
+      'system'
+    );
+  } catch (error) {
+    setAuthError('Invalid or expired OTP. Please try again.');
+    setTimeout(() => setAuthError(''), 3500);
+  } finally {
+    setIsLoading(false);
+  }
+};
 
   const handleResendOtp = () => {
     if (timer > 0) return;
