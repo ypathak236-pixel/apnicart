@@ -43,8 +43,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
 
     setIsLoading(true);
     // Generate secure 4-digit code in background (sent via carrier SMS)
-    const randomCode = Math.floor(1000 + Math.random() * 9000).toString();
-    setGeneratedOtp(randomCode);
+   
 
     setTimeout(() => {
       setIsLoading(false);
@@ -56,9 +55,9 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
 
   const handleVerifyOtp = (e: React.FormEvent) => {
     e.preventDefault();
-    // Accept generated code or standard test code 1234
+    
   if (!otp || otp.length !== 4) {
-      setAuthError('Invalid OTP. Please check the SMS sent to your phone or use 1234.');
+     setAuthError('Invalid OTP. Please check the SMS sent to your phone.');
       setTimeout(() => setAuthError(''), 3500);
       return;
     }
