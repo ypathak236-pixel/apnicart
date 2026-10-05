@@ -398,18 +398,7 @@ export const RazorpayModal: React.FC<RazorpayModalProps> = ({
                 />
               </div>
 
-              <div>
-                <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
-                  Razorpay Key Secret
-                </label>
-                <input
-                  type="password"
-                  value={keySecretInput}
-                  onChange={(e) => setKeySecretInput(e.target.value)}
-                  placeholder="Enter your razorpay secret code"
-                  className="w-full rounded-xl border border-slate-300 px-3.5 py-2 text-xs font-mono focus:border-amber-500 focus:outline-none dark:border-slate-700 dark:bg-slate-800 dark:text-white"
-                />
-              </div>
+            
 
               <div className="flex items-center justify-between pt-2">
                 <button
