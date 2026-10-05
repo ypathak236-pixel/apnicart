@@ -286,7 +286,7 @@ if (adminCredentials.passwordHash && entered === adminCredentials.passwordHash) 
 
   const handleChangePasswordInSettings = (e: React.FormEvent) => {
     e.preventDefault();
-    if (oldPasswordChangeInput.trim() !== adminCredentials.passwordHash && oldPasswordChangeInput.trim() !== '1234') {
+if (oldPasswordChangeInput.trim() !== adminCredentials.passwordHash) {
       setPassChangeSuccess('Current password did not match.');
       return;
     }
