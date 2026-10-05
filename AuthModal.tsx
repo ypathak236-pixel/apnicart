@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { X, Smartphone, ArrowRight, ShieldCheck, Check, Lock, AlertCircle } from 'lucide-react';
 import { useStore } from '../context/StoreContext';
 import { RecaptchaVerifier, signInWithPhoneNumber, ConfirmationResult } from 'firebase/auth';
@@ -14,6 +14,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
   const [name, setName] = useState('');
   const [step, setStep] = useState<'phone' | 'otp'>('phone');
   const [confirmationResult, setConfirmationResult] = useState<ConfirmationResult | null>(null);
+  const recaptchaVerifier = useRef<RecaptchaVerifier | null>(null);
   const [otp, setOtp] = useState('');
 
   const [isLoading, setIsLoading] = useState(false);
@@ -29,30 +30,56 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
   }, [step, timer]);
 
   if (!isOpen) return null;
+const handleSendOtp = async (e: React.FormEvent) => {
+  e.preventDefault();
 
-  const handleSendOtp = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!name.trim()) {
-      setAuthError('Customer Name is mandatory. Please enter your full name.');
-      setTimeout(() => setAuthError(''), 3500);
-      return;
+  if (!name.trim()) {
+    setAuthError('Customer Name is mandatory. Please enter your full name.');
+    setTimeout(() => setAuthError(''), 3500);
+    return;
+  }
+
+  if (phone.length !== 10) {
+    setAuthError('Please enter a valid 10-digit mobile number.');
+    setTimeout(() => setAuthError(''), 3000);
+    return;
+  }
+
+  setIsLoading(true);
+  setAuthError('');
+
+  try {
+    if (!recaptchaVerifier.current) {
+      recaptchaVerifier.current = new RecaptchaVerifier(
+        auth,
+        'recaptcha-container',
+        {
+          size: 'invisible'
+        }
+      );
     }
-    if (phone.length < 10) {
-      setAuthError('Please enter a valid 10-digit mobile number.');
-      setTimeout(() => setAuthError(''), 3000);
-      return;
-    }
 
-    setIsLoading(true);
-   
-   
+    const phoneNumber = `+91${phone.trim()}`;
 
-    setTimeout(() => {
-      setIsLoading(false);
-      setStep('otp');
-      setTimer(30);
-      setAuthError('');
-    }, 700);
+    const confirmation = await signInWithPhoneNumber(
+      auth,
+      phoneNumber,
+      recaptchaVerifier.current
+    );
+
+    setConfirmationResult(confirmation);
+    setStep('otp');
+    setTimer(30);
+    setAuthError('');
+  } catch (error) {
+    console.error('OTP send error:', error);
+    setAuthError('Unable to send OTP. Please try again.');
+    recaptchaVerifier.current?.clear();
+    recaptchaVerifier.current = null;
+  } finally {
+    setIsLoading(false);
+  }
+};
   };
 
 const handleVerifyOtp = async (e: React.FormEvent) => {
