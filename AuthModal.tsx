@@ -193,8 +193,8 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
                 />
               </div>
               <p className="text-[10px] text-center text-slate-400 mt-2">
-                SMS dispatched to +91 {phone}. (Default bypass: 1234)
-              </p>
+  SMS dispatched to +91 {phone}.
+</p>
             </div>
 
             <button
