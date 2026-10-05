@@ -42,7 +42,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
     }
 
     setIsLoading(true);
-    // Generate secure 4-digit code in background (sent via carrier SMS)
+   
    
 
     setTimeout(() => {
