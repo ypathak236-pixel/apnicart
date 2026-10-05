@@ -404,17 +404,17 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     try {
       const saved = localStorage.getItem('tb_razorpay');
       return saved ? JSON.parse(saved) : {
-        keyId: 'rzp_test_TownBlink2026',
-        keySecret: 'sec_town_blink_store_key_9921',
-        isTestMode: true,
-        merchantUpiId: 'apnicart@townupi'
+        keyId: '',
+keySecret: '',
+isTestMode: true,
+merchantUpiId: ''
       };
     } catch {
       return {
-        keyId: 'rzp_test_TownBlink2026',
-        keySecret: 'sec_town_blink_store_key_9921',
-        isTestMode: true,
-        merchantUpiId: 'apnicart@townupi'
+        keyId: '',
+keySecret: '',
+isTestMode: true,
+merchantUpiId: ''
       };
     }
   });
