@@ -481,7 +481,7 @@ if (oldPasswordChangeInput.trim() !== adminCredentials.passwordHash) {
 
                 <div>
                   <label className="text-[11px] text-slate-600 font-semibold block mb-1">
-                    Security Answer (Default: jalaun786)
+                    Security Answer
                   </label>
                   <input
                     type="text"
