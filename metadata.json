@@ -1,0 +1,6 @@
+{
+  "name": "ApniCart - 10-Minute Town Delivery",
+  "description": "Lightning-fast 10-minute local delivery for groceries, dairy, snacks, electronics, medicines & personal care with Razorpay payment and live tracking.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
