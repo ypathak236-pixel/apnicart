@@ -121,7 +121,7 @@ interface StoreContextType {
   loginWithPhone: (phone: string, name: string) => void;
   logout: () => void;
   toggleDarkMode: () => void;
-  updateRazorpayConfig: (keyId: string, keySecret: string, isTestMode?: boolean, merchantUpiId?: string) => void;
+ updateRazorpayConfig: (keyId: string, isTestMode?: boolean, merchantUpiId?: string) => void;
   requestPushNotificationPermission: () => Promise<boolean>;
   sendPushNotification: (title: string, message: string, type?: 'order' | 'stock' | 'promo' | 'system') => void;
   markNotificationsAsRead: () => void;
