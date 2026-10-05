@@ -49,7 +49,7 @@ export const RazorpayModal: React.FC<RazorpayModalProps> = ({
 
   // Config editing state
   const [keyIdInput, setKeyIdInput] = useState(razorpayConfig.keyId);
-  const [keySecretInput, setKeySecretInput] = useState(razorpayConfig.keySecret);
+  
   const [showConfigSaved, setShowConfigSaved] = useState(false);
 
   if (!isOpen) return null;
@@ -136,7 +136,7 @@ export const RazorpayModal: React.FC<RazorpayModalProps> = ({
 
   const handleSaveConfig = (e: React.FormEvent) => {
     e.preventDefault();
-    updateRazorpayConfig(keyIdInput.trim(), keySecretInput.trim(), true);
+  updateRazorpayConfig(keyIdInput.trim(), true);
     setShowConfigSaved(true);
     setTimeout(() => setShowConfigSaved(false), 2500);
   };
