@@ -250,7 +250,7 @@ export const AdminPortal: React.FC = () => {
     }
 
     const entered = enteredPassword.trim();
-    if (entered === adminCredentials.passwordHash || entered === '1234' || entered === 'apnacart') {
+if (adminCredentials.passwordHash && entered === adminCredentials.passwordHash) {
       setIsAdminAuthenticated(true);
       sessionStorage.setItem('apna_admin_auth', 'true');
       setFailedAttempts(0);
