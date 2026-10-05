@@ -441,7 +441,7 @@ if (oldPasswordChangeInput.trim() !== adminCredentials.passwordHash) {
             >
               Forgot Password?
             </button>
-            <span className="text-slate-400 text-[11px]">(Default: apnicart2026)</span>
+          <span className="text-slate-400 text-[11px]">(Default: apnicart2026)</span>
           </div>
 
           <div className="mt-6 pt-4 border-t border-slate-100 text-center">
