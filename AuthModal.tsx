@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { X, Smartphone, ArrowRight, ShieldCheck, Check, Lock, AlertCircle } from 'lucide-react';
 import { useStore } from '../context/StoreContext';
-
+import { RecaptchaVerifier, signInWithPhoneNumber, ConfirmationResult } from 'firebase/auth';
+import { auth } from '../firebase';
 interface AuthModalProps {
   isOpen: boolean;
   onClose: () => void;
