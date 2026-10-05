@@ -77,8 +77,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
 
   const handleResendOtp = () => {
     if (timer > 0) return;
-    const newCode = Math.floor(1000 + Math.random() * 9000).toString();
-    setGeneratedOtp(newCode);
+    
     setTimer(30);
     setAuthError('New OTP has been dispatched to your mobile number via SMS.');
     setTimeout(() => setAuthError(''), 3000);
