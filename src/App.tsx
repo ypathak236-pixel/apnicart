@@ -20,7 +20,6 @@ import {
 import { StoreProvider, useStore } from } from "./StoreContext";
 import { Product, CategoryType, Order, TownArea } from './types';
 import { TOWN_AREAS } from './data/mockProducts';
-
 import { Navbar } from './components/Navbar';
 import { ProductCard } from './components/ProductCard';
 import { OrderTrackingModal } from './components/OrderTrackingModal';
