@@ -14,7 +14,7 @@ import {
   ExternalLink
 } from 'lucide-react';
 import { useStore } from '../context/StoreContext';
-import { CustomerComplaint } from '../types';
+import { CustomerComplaint } from '..../types';
 
 interface ContactSupportModalProps {
   isOpen: boolean;
@@ -290,3 +290,4 @@ export const ContactSupportModal: React.FC<ContactSupportModalProps> = ({
     </div>
   );
 };
+

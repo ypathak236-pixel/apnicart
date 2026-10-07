@@ -129,3 +129,4 @@ export const NotificationModal: React.FC<NotificationModalProps> = ({ isOpen, on
     </div>
   );
 };
+

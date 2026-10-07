@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Plus, Minus, Star, ShoppingBag, AlertCircle, Zap, RefreshCw } from 'lucide-react';
-import { Product } from '../types';
+import { Product } from '..../types';
 import { useStore } from '../context/StoreContext';
 import { getProductMinQuantity } from '../data/mockProducts';
 
@@ -195,3 +195,4 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onQuickView }
     </div>
   );
 };
+

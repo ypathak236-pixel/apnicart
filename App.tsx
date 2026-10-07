@@ -17,24 +17,24 @@ import {
   Map as MapIcon,
   Compass
 } from 'lucide-react';
-import { StoreProvider, useStore } from './context/StoreContext';
+import { StoreProvider, useStore } from "./StoreContext";
 import { Product, CategoryType, Order, TownArea } from './types';
-import { TOWN_AREAS } from './data/mockProducts';
-import { Navbar } from './components/Navbar';
-import { ProductCard } from './components/ProductCard';
-import { OrderTrackingModal } from './components/OrderTrackingModal';
-import { CustomerFeedbackModal } from './components/CustomerFeedbackModal';
-import { LocationModal } from './components/LocationModal';
-import { AuthModal } from './components/AuthModal';
-import { NotificationModal } from './components/NotificationModal';
-import { ProductDetailModal } from './components/ProductDetailModal';
-import { OrdersView } from './components/OrdersView';
-import { AdminPortal } from './components/AdminPortal';
-import { Footer } from './components/Footer';
-import { CartDrawer } from './components/CartDrawer';
-import { CheckoutGatewayModal } from './components/CheckoutGatewayModal';
-import { CustomerProfileModal } from './components/CustomerProfileModal';
-import { ContactSupportModal } from './components/ContactSupportModal';
+import { TOWN_AREAS } from '.'./mockProducts'
+import { Navbar } from "./Navbar";
+import { ProductCard } from "./ProductCard";
+import { OrderTrackingModal } from './OrderTrackingModal';
+import { CustomerFeedbackModal } from './CustomerFeedbackModal';
+import { LocationModal } from './LocationModal';
+import { AuthModal } from './AuthModal';
+import { NotificationModal } from './NotificationModal';
+import { ProductDetailModal } from './ProductDetailModal';
+import { OrdersView } from './OrdersView';
+import { AdminPortal } from './AdminPortal';
+import { Footer } from './Footer';
+import { CartDrawer } from './CartDrawer';
+import { CheckoutGatewayModal } from './CheckoutGatewayModal';
+import { CustomerProfileModal } from './CustomerProfileModal';
+import { ContactSupportModal } from './ContactSupportModal';
 
 function StorefrontApp() {
   const { 

@@ -460,3 +460,4 @@ export const RazorpayModal: React.FC<RazorpayModalProps> = ({
     </div>
   );
 };
+

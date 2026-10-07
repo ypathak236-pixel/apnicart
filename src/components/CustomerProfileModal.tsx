@@ -266,3 +266,4 @@ export const CustomerProfileModal: React.FC<CustomerProfileModalProps> = ({
     </div>
   );
 };
+

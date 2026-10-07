@@ -13,7 +13,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
   const [name, setName] = useState('');
   const [step, setStep] = useState<'phone' | 'otp'>('phone');
   const [otp, setOtp] = useState('');
-  const [generatedOtp, setGeneratedOtp] = useState('');
+ 
   const [isLoading, setIsLoading] = useState(false);
   const [authError, setAuthError] = useState('');
   const [timer, setTimer] = useState(30);
@@ -28,7 +28,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
 
   if (!isOpen) return null;
 
-  const handleSendOtp = (e: React.FormEvent) => {
+  const handleSendOtp = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!name.trim()) {
       setAuthError('Customer Name is mandatory. Please enter your full name.');
@@ -43,8 +43,8 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
 
     setIsLoading(true);
     // Generate secure 4-digit code in background (sent via carrier SMS)
-    const randomCode = Math.floor(1000 + Math.random() * 9000).toString();
-    setGeneratedOtp(randomCode);
+   
+    
 
     setTimeout(() => {
       setIsLoading(false);
@@ -54,35 +54,53 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
     }, 700);
   };
 
-  const handleVerifyOtp = (e: React.FormEvent) => {
-    e.preventDefault();
-    // Accept generated code or standard test code 1234
-    if (otp !== generatedOtp && otp !== '1234') {
-      setAuthError('Invalid OTP. Please check the SMS sent to your phone or use 1234.');
-      setTimeout(() => setAuthError(''), 3500);
-      return;
-    }
+  const handleVerifyOtp = async (e: React.FormEvent) => {
+  e.preventDefault();
 
-    setIsLoading(true);
-    setTimeout(() => {
-      setIsLoading(false);
-      loginWithPhone(phone, name.trim());
-      onClose();
-      setStep('phone');
-      setPhone('');
-      setOtp('');
-      sendPushNotification(`Welcome, ${name}!`, 'Signed in successfully to ApniCart.', 'system');
-    }, 500);
-  };
+  if (!otp || otp.length !== 6) {
+    setAuthError('Please enter the 6-digit OTP.');
+    setTimeout(() => setAuthError(''), 3500);
+    return;
+  }
 
-  const handleResendOtp = () => {
-    if (timer > 0) return;
-    const newCode = Math.floor(1000 + Math.random() * 9000).toString();
-    setGeneratedOtp(newCode);
-    setTimer(30);
-    setAuthError('New OTP has been dispatched to your mobile number via SMS.');
-    setTimeout(() => setAuthError(''), 3000);
-  };
+  if (!confirmationResult) {
+    setAuthError('Please request a new OTP first.');
+    return;
+  }
+
+  setIsLoading(true);
+
+  try {
+    const result = await confirmationResult.confirm(otp);
+    const verifiedPhone = result.user.phoneNumber || phone;
+
+    loginWithPhone(verifiedPhone, name.trim());
+
+    onClose();
+    setStep('phone');
+    setPhone('');
+    setOtp('');
+    setConfirmationResult(null);
+
+    sendPushNotification(
+      `Welcome, ${name}!`,
+      'Signed in successfully to ApniCart.',
+      'system'
+    );
+  } catch (error) {
+    setAuthError('Invalid or expired OTP. Please try again.');
+    setTimeout(() => setAuthError(''), 3500);
+  } finally {
+    setIsLoading(false);
+  }
+};
+
+const handleResendOtp = async () => {
+  if (timer > 0) return;
+
+  setAuthError('Please request a new OTP.');
+  setTimeout(() => setAuthError(''), 3000);
+};
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/70 p-4 backdrop-blur-xs">
@@ -193,7 +211,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
                 />
               </div>
               <p className="text-[10px] text-center text-slate-400 mt-2">
-                SMS dispatched to +91 {phone}. (Default bypass: 1234)
+                SMS dispatched to +91 {phone}.
               </p>
             </div>
 
@@ -244,3 +262,4 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
     </div>
   );
 };
+

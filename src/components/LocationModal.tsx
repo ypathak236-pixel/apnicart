@@ -18,7 +18,7 @@ import {
 } from 'lucide-react';
 import { useStore } from '../context/StoreContext';
 import { TOWN_AREAS } from '../data/mockProducts';
-import { TownArea } from '../types';
+import { TownArea } from '..../types';
 
 interface LocationModalProps {
   isOpen: boolean;
@@ -353,3 +353,4 @@ export const LocationModal: React.FC<LocationModalProps> = ({ isOpen, onClose })
     </div>
   );
 };
+

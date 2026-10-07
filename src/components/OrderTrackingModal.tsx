@@ -15,7 +15,7 @@ import {
   HelpCircle,
   Info
 } from 'lucide-react';
-import { Order } from '../types';
+import { Order } from '..../types';
 import { useStore } from '../context/StoreContext';
 
 interface OrderTrackingModalProps {
@@ -437,3 +437,4 @@ export const OrderTrackingModal: React.FC<OrderTrackingModalProps> = ({
     </div>
   );
 };
+

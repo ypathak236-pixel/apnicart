@@ -20,6 +20,7 @@ import {
 import { StoreProvider, useStore } from } from "./StoreContext";
 import { Product, CategoryType, Order, TownArea } from './types';
 import { TOWN_AREAS } from './data/mockProducts';
+
 import { Navbar } from './components/Navbar';
 import { ProductCard } from './components/ProductCard';
 import { OrderTrackingModal } from './components/OrderTrackingModal';
@@ -35,7 +36,6 @@ import { CartDrawer } from './components/CartDrawer';
 import { CheckoutGatewayModal } from './components/CheckoutGatewayModal';
 import { CustomerProfileModal } from './components/CustomerProfileModal';
 import { ContactSupportModal } from './components/ContactSupportModal';
-
 function StorefrontApp() {
   const { 
     products, 

@@ -14,7 +14,7 @@ import {
   Info
 } from 'lucide-react';
 import { useStore } from '../context/StoreContext';
-import { Order } from '../types';
+import { Order } from '..../types';
 
 interface OrdersViewProps {
   onTrackOrder: (order: Order) => void;
@@ -275,3 +275,4 @@ export const OrdersView: React.FC<OrdersViewProps> = ({
     </div>
   );
 };
+

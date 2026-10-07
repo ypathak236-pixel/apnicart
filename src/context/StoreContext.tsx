@@ -23,7 +23,7 @@ import {
   INITIAL_COUPONS, 
   INITIAL_COMPLAINTS,
   getProductMinQuantity 
-} from '../data/mockProducts';
+} from "../data/mockProducts";
 import confetti from 'canvas-confetti';
 
 export interface SalesHistoryPoint {
@@ -1365,3 +1365,4 @@ export const useStore = () => {
   }
   return context;
 };
+

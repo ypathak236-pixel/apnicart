@@ -1,4 +1,4 @@
-import { Product, CategoryInfo, TownArea, CustomerFeedback, Coupon, CustomerComplaint } from '../types';
+import { Product, CategoryInfo, TownArea, CustomerFeedback, Coupon, CustomerComplaint } from './types';
 
 export function getProductMinQuantity(price: number): number {
   if (price < 30) return 4;

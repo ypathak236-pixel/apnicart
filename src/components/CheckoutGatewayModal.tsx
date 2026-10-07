@@ -16,7 +16,7 @@ import {
   Info
 } from 'lucide-react';
 import { useStore } from '../context/StoreContext';
-import { Order } from '../types';
+import { Order } from '..../types';
 
 interface CheckoutGatewayModalProps {
   isOpen: boolean;
@@ -450,11 +450,7 @@ export const CheckoutGatewayModal: React.FC<CheckoutGatewayModalProps> = ({
                       <p className="text-[11px] text-slate-500 mt-0.5">
                         UPI (GPay, PhonePe, Paytm), Netbanking, Wallets & Cards
                       </p>
-                      {razorpayConfig.keyId && (
-                        <span className="text-[10px] text-slate-400 font-mono block">
-                          Key: {razorpayConfig.keyId.slice(0, 12)}...
-                        </span>
-                      )}
+                      
                     </div>
                   </div>
                   <input
@@ -700,3 +696,4 @@ export const CheckoutGatewayModal: React.FC<CheckoutGatewayModalProps> = ({
     </div>
   );
 };
+

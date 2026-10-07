@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { X, Star, Plus, Minus, ShoppingBag, Zap, ArrowRight, RefreshCw, ChevronLeft, ChevronRight, Check } from 'lucide-react';
-import { Product } from '../types';
+import { Product } from '..../types';
 import { useStore } from '../context/StoreContext';
 import { getProductMinQuantity } from '../data/mockProducts';
 
@@ -276,3 +276,4 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
     </div>
   );
 };
+

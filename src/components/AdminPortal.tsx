@@ -48,7 +48,7 @@ import {
   Globe
 } from 'lucide-react';
 import { useStore } from '../context/StoreContext';
-import { OrderStatus, Product, CategoryInfo, Coupon, CustomerComplaint } from '../types';
+import { OrderStatus, Product, CategoryInfo, Coupon, CustomerComplaint } from '..../types';
 
 export const AdminPortal: React.FC = () => {
   const {
@@ -1980,3 +1980,4 @@ export const AdminPortal: React.FC = () => {
     </div>
   );
 };
+
