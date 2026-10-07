@@ -17,7 +17,7 @@ import {
   Map as MapIcon,
   Compass
 } from 'lucide-react';
-import { StoreProvider, useStore } from } from "./StoreContext";
+import { StoreProvider, useStore } from './context/StoreContext';
 import { Product, CategoryType, Order, TownArea } from './types';
 import { TOWN_AREAS } from './data/mockProducts';
 import { Navbar } from './components/Navbar';
@@ -900,3 +900,4 @@ export default function App() {
     </ErrorBoundary>
   );
 }
+
