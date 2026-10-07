@@ -130,52 +130,120 @@ export const CheckoutGatewayModal: React.FC<CheckoutGatewayModalProps> = ({
     }
   };
 
-  const handleLaunchRazorpayGateway = () => {
-    setIsProcessing(true);
+  const handleLaunchRazorpayGateway = async () => {
+  setIsProcessing(true);
 
-    if (typeof window !== 'undefined' && (window as any).Razorpay && razorpayConfig.keyId) {
-      try {
-        const options = {
-          key: razorpayConfig.keyId,
-          amount: finalPayable * 100,
-          currency: 'INR',
-          name: 'ApniCart 10-Min Delivery',
-          description: `Delivery to ${areaColony}`,
-          image: 'https://images.unsplash.com/photo-1542838132-92c53300491e?w=120&auto=format&fit=crop&q=80',
-          prefill: {
-            name: customerName,
-            contact: customerPhone,
-            email: 'customer@town.in',
-          },
-          theme: {
-            color: '#0c831f',
-          },
-          handler: async function (response: any) {
-            const realTxnId = response.razorpay_payment_id || `pay_${Date.now()}`;
-            await finalizeOrder('razorpay', realTxnId);
-          },
-          modal: {
-            ondismiss: function () {
-              setIsProcessing(false);
-            }
-          }
-        };
+  if (
+    typeof window === 'undefined' ||
+    !(window as any).Razorpay ||
+    !razorpayConfig.keyId
+  ) {
+    setIsProcessing(false);
+    setShowRazorpayModal(true);
+    return;
+  }
 
-        const rzp = new (window as any).Razorpay(options);
-        rzp.on('payment.failed', function (resp: any) {
-          console.warn('Razorpay payment failed:', resp.error);
-          setIsProcessing(false);
-        });
-        rzp.open();
-        return;
-      } catch (err) {
-        console.warn('Native Razorpay popup intercepted, switching to secure gateway panel:', err);
-      }
+  try {
+    // 1. Create Razorpay Order on Vercel server
+    const orderResponse = await fetch('/api/create-order', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        amount: finalPayable,
+        receipt: `apnicart_${Date.now()}`,
+      }),
+    });
+
+    const orderData = await orderResponse.json();
+
+    if (!orderResponse.ok || !orderData.orderId) {
+      throw new Error(
+        orderData?.error || 'Unable to create Razorpay order'
+      );
     }
 
-    setShowRazorpayModal(true);
+    // 2. Open Razorpay Checkout with server-created Order ID
+    const options = {
+      key: orderData.keyId || razorpayConfig.keyId,
+      amount: orderData.amount,
+      currency: orderData.currency || 'INR',
+      order_id: orderData.orderId,
+
+      name: 'ApniCart 10-Min Delivery',
+      description: `Delivery to ${areaColony}`,
+
+      prefill: {
+        name: customerName,
+        contact: customerPhone,
+        email: 'customer@apnicart.in',
+      },
+
+      theme: {
+        color: '#0c831f',
+      },
+
+      handler: async function (response: any) {
+        try {
+          // 3. Verify payment signature on Vercel server
+          const verifyResponse = await fetch('/api/verify-payment', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              razorpay_order_id: response.razorpay_order_id,
+              razorpay_payment_id: response.razorpay_payment_id,
+              razorpay_signature: response.razorpay_signature,
+            }),
+          });
+
+          const verifyData = await verifyResponse.json();
+
+          if (!verifyResponse.ok || !verifyData.success) {
+            throw new Error(
+              verifyData?.error || 'Payment verification failed'
+            );
+          }
+
+          // 4. Only create the order after successful verification
+          await finalizeOrder(
+            'razorpay',
+            response.razorpay_payment_id
+          );
+        } catch (error) {
+          console.error('Payment verification error:', error);
+          alert('Payment verification failed. Please contact support.');
+          setIsProcessing(false);
+        }
+      },
+
+      modal: {
+        ondismiss: function () {
+          setIsProcessing(false);
+        },
+      },
+    };
+
+    const rzp = new (window as any).Razorpay(options);
+
+    rzp.on('payment.failed', function (resp: any) {
+      console.warn('Razorpay payment failed:', resp.error);
+      setIsProcessing(false);
+    });
+
+    rzp.open();
+  } catch (error) {
+    console.error('Razorpay order creation error:', error);
     setIsProcessing(false);
-  };
+    alert(
+      error instanceof Error
+        ? error.message
+        : 'Unable to start Razorpay payment.'
+    );
+  }
+};
 
   const handlePlaceOrder = async () => {
     if (selectedMethod === 'razorpay') {
