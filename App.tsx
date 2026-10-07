@@ -894,7 +894,9 @@ class ErrorBoundary extends React.Component<
 export default function App() {
   const isAdminRoute =
   window.location.pathname === '/admin' ||
-  window.location.pathname === '/admin/';
+  window.location.pathname === '/admin/' ||
+  window.location.hash === '#/admin' ||
+  window.location.hash === '#/admin/';
   return (
     <ErrorBoundary>
       <StoreProvider>
