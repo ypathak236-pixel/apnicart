@@ -404,7 +404,7 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     try {
       const saved = localStorage.getItem('tb_razorpay');
       return saved ? JSON.parse(saved) : {
-        keyId: '',
+        keyId: 'rzp_test_TjjCTPUX9HXJb2',
 keySecret: '',
 isTestMode: true,
 merchantUpiId: ''
